@@ -2,52 +2,26 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    ":dependencyDashboard",
-    ":semanticCommits",
-    ":separateMajorReleases",
-    ":maintainLockFilesWeekly",
-    "group:monorepos",
-    ":automergeDigest",
-    ":automergeMinor",
-    ":automergeBranch"
+    "mergeConfidence:all-badges", 
+    ":dependencyDashboard"
   ],
   "timezone": "Asia/Kolkata",
   "schedule": ["after 9pm on saturday", "before 6am on sunday"],
-  "prConcurrentLimit": 10,
-  "prHourlyLimit": 4,
-  "rangeStrategy": "bump",
-  "labels": ["dependencies", "renovate"],
-  "assigneesFromCodeOwners": true,
-  "reviewersFromCodeOwners": true,
+  "labels": ["dependencies"],
   "osvVulnerabilityAlerts": true,
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": ["before 6am on sunday"]
-  },
   "packageRules": [
     {
-      "description": "Auto-merge patch+minor devDependencies after CI passes",
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["patch", "minor"],
-      "automerge": true,
-      "automergeType": "pr",
-      "platformAutomerge": true
+      "description": "Label all minor updates clearly",
+      "matchUpdateTypes": ["minor"],
+      "labels": ["minor-bump"]
     },
     {
-      "description": "Auto-merge patch updates for production dependencies",
-      "matchDepTypes": ["dependencies"],
-      "matchUpdateTypes": ["patch"],
-      "automerge": true,
-      "platformAutomerge": true
-    },
-    {
-      "description": "Require human review for all major bumps",
+      "description": "Label all major breaking updates clearly",
       "matchUpdateTypes": ["major"],
-      "automerge": false,
-      "labels": ["dependencies", "major-bump", "needs-review"]
+      "labels": ["major-bump"]
     },
     {
-      "description": "Hold framework upgrades 7 days for ecosystem stabilisation",
+      "description": "Hold core frameworks 7 days for ecosystem stabilization",
       "matchPackageNames": ["next", "react", "react-dom", "@prisma/client", "prisma"],
       "minimumReleaseAge": "7 days"
     }
